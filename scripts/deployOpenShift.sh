@@ -473,23 +473,23 @@ runuser -l $SUDOUSER -c "ansible-playbook -f 30 ~/openshift-container-platform-p
 sleep 20
 
 # Installing Service Catalog, Ansible Service Broker and Template Service Broker
-if [[ $AZURE == "true" || $ENABLECNS == "true" ]]
-then
-    runuser -l $SUDOUSER -c "ansible-playbook -e openshift_cloudprovider_azure_client_id=$AADCLIENTID -e openshift_cloudprovider_azure_client_secret=\"$AADCLIENTSECRET\" -e openshift_cloudprovider_azure_tenant_id=$TENANTID -e openshift_cloudprovider_azure_subscription_id=$SUBSCRIPTIONID -e openshift_enable_service_catalog=true -f 30 /usr/share/ansible/openshift-ansible/playbooks/openshift-service-catalog/config.yml"
-fi
+#if [[ $AZURE == "true" || $ENABLECNS == "true" ]]
+#then
+#    runuser -l $SUDOUSER -c "ansible-playbook -e openshift_cloudprovider_azure_client_id=$AADCLIENTID -e openshift_cloudprovider_azure_client_secret=\"$AADCLIENTSECRET\" -e openshift_cloudprovider_azure_tenant_id=$TENANTID -e openshift_cloudprovider_azure_subscription_id=$SUBSCRIPTIONID -e openshift_enable_service_catalog=true -f 30 /usr/share/ansible/openshift-ansible/playbooks/openshift-service-catalog/config.yml"
+#fi
 
 # Adding Open Sevice Broker for Azaure (requires service catalog)
-if [[ $AZURE == "true" ]]
-then
-    oc new-project osba
-    oc process -f https://raw.githubusercontent.com/Azure/open-service-broker-azure/master/contrib/openshift/osba-os-template.yaml  \
-        -p ENVIRONMENT=AzurePublicCloud \
-        -p AZURE_SUBSCRIPTION_ID=$SUBSCRIPTIONID \
-        -p AZURE_TENANT_ID=$TENANTID \
-        -p AZURE_CLIENT_ID=$AADCLIENTID \
-        -p AZURE_CLIENT_SECRET=$AADCLIENTSECRET \
-        | oc create -f -
-fi
+#if [[ $AZURE == "true" ]]
+#then
+#    oc new-project osba
+#    oc process -f https://raw.githubusercontent.com/Azure/open-service-broker-azure/master/contrib/openshift/osba-os-template.yaml  \
+#        -p ENVIRONMENT=AzurePublicCloud \
+#        -p AZURE_SUBSCRIPTION_ID=$SUBSCRIPTIONID \
+#        -p AZURE_TENANT_ID=$TENANTID \
+#        -p AZURE_CLIENT_ID=$AADCLIENTID \
+#        -p AZURE_CLIENT_SECRET=$AADCLIENTSECRET \
+#        | oc create -f -
+#fi
 
 # Configure Metrics
 if [ $METRICS == "true" ]
